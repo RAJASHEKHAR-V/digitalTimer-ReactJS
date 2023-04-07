@@ -2,46 +2,20 @@ import {Component} from 'react'
 
 import './index.css'
 
-const TimeControl = props => {
-  const {isReset, setTimerLimit} = props
-  return (
-    <div className="timer-set-buttons-card">
-      <div>
-        <button className="increment-button" type="submit" disabled={isReset}>
-          +
-        </button>
-      </div>
-      <p className="set-timer-value">{setTimerLimit}</p>
-      <div>
-        <button className="decrement-button" type="submit" disabled={isReset}>
-          -
-        </button>
-      </div>
-    </div>
-  )
-}
-
 class DigitalTimer extends Component {
   state = {
     isTimerStarted: false,
     minutes: 25,
     seconds: '00',
-    constantMinutes: 25,
     secondsIncreased: 1,
     setTimerLimit: 25,
-    isReset: true,
-  }
-
-  componentDidMount() {
-    this.timerId = setInterval(this.tick, 1000)
+    isReset: false,
   }
 
   tick = () => {
-    const {secondsIncreased, constantMinutes} = this.state
-    const newMinutes = Math.floor(
-      (constantMinutes * 60 - secondsIncreased) / 60,
-    )
-    const newSeconds = (constantMinutes * 60 - secondsIncreased) % 60
+    const {secondsIncreased, setTimerLimit} = this.state
+    const newMinutes = Math.floor((setTimerLimit * 60 - secondsIncreased) / 60)
+    const newSeconds = (setTimerLimit * 60 - secondsIncreased) % 60
     this.setState(prevState => ({
       minutes: newMinutes,
       seconds: newSeconds,
@@ -50,11 +24,40 @@ class DigitalTimer extends Component {
   }
 
   onPlayOrStopButton = () => {
-    this.setState(prevState => ({isTimerStarted: !prevState.isTimerStarted}))
     const {isTimerStarted} = this.state
-    if (isTimerStarted === false) {
-      clearTimeout(this.timerId)
+
+    if (!isTimerStarted) {
+      this.timerId = setInterval(this.tick, 1000)
+      this.setState(prevState => ({
+        isTimerStarted: !prevState.isTimerStarted,
+        isReset: !prevState.isReset,
+      }))
+    } else {
+      clearInterval(this.timerId)
+      this.setState(prevState => ({isTimerStarted: !prevState.isTimerStarted}))
     }
+  }
+
+  onReset = () => {
+    this.setState(prevState => ({
+      minutes: prevState.setTimerLimit,
+      seconds: 0,
+      isReset: !prevState.isReset,
+    }))
+  }
+
+  onIncrementButton = () => {
+    this.setState(prevState => ({
+      minutes: prevState.setTimerLimit + 1,
+      setTimerLimit: prevState.setTimerLimit + 1,
+    }))
+  }
+
+  onDecrementButton = () => {
+    this.setState(prevState => ({
+      minutes: prevState.setTimerLimit - 1,
+      setTimerLimit: prevState.setTimerLimit - 1,
+    }))
   }
 
   render() {
@@ -113,7 +116,11 @@ class DigitalTimer extends Component {
               </div>
               <div className="reset-card">
                 <div>
-                  <button className="reset-button" type="submit">
+                  <button
+                    className="reset-button"
+                    type="submit"
+                    onClick={this.onReset}
+                  >
                     <img
                       src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png"
                       className="reset-image"
@@ -126,11 +133,29 @@ class DigitalTimer extends Component {
             </div>
             <div className="timer-limits-set-card">
               <p className="timer-limit-para">Set Timer limit</p>
-              <TimeControl
-                key="time-control"
-                isReset={isReset}
-                setTimerLimit={setTimerLimit}
-              />
+              <div className="timer-set-buttons-card">
+                <div>
+                  <button
+                    className="increment-button"
+                    type="submit"
+                    disabled={isReset}
+                    onClick={this.onIncrementButton}
+                  >
+                    +
+                  </button>
+                </div>
+                <p className="set-timer-value">{setTimerLimit}</p>
+                <div>
+                  <button
+                    className="decrement-button"
+                    type="submit"
+                    disabled={isReset}
+                    onClick={this.onDecrementButton}
+                  >
+                    -
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
