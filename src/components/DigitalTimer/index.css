@@ -18,7 +18,8 @@
 .timer-body {
   width: 90%;
   display: flex;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
 }
 
 .timer-card {
@@ -40,7 +41,7 @@
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
@@ -73,8 +74,9 @@
 }
 
 .start-stop-card {
-  width: 40%;
+  width: 20%;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -99,8 +101,9 @@
 }
 
 .reset-card {
-  width: 40%;
+  width: 20%;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -135,12 +138,14 @@
   font-family: 'Roboto';
   color: #1e293b;
   font-weight: 500;
-  width: 40%;
+  width: 100%;
+  text-align: center;
 }
 
 .timer-set-buttons-card {
-  width: 35%;
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -154,18 +159,20 @@
   font-weight: 700;
   outline: none;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 .set-timer-value {
-  width: 50px;
-  height: 25px;
-  background-image: linear-gradient(to right, #cffcf1, #00d9f5);
+  width: 60px;
+  height: 30px;
+  background-image: linear-gradient(to right, #43f74c, #00d9f5);
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'Roboto';
   color: #0f172a;
   font-weight: 600;
+  border-radius: 5px;
 }
 
 .decrement-button {
@@ -178,4 +185,131 @@
   font-weight: 700;
   outline: none;
   cursor: pointer;
+  margin-left: 5px;
+}
+
+@media (max-width: 767px) {
+  .digi-heading {
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .timer-body {
+    flex-direction: column;
+  }
+
+  .timer-card {
+    min-height: 35vh;
+    width: 80%;
+  }
+
+  .time {
+    font-size: 15px;
+  }
+
+  .time-status {
+    font-size: 12px;
+  }
+
+  .time-control-body {
+    width: 80%;
+  }
+
+  .controls-card {
+    width: 98%;
+  }
+
+  .start-stop-card {
+    width: 40%;
+  }
+
+  .start-stop-button {
+    height: 45px;
+    width: 50px;
+  }
+
+  .start-stop-status {
+    font-size: 12px;
+  }
+
+  .reset-card {
+    width: 40%;
+  }
+
+  .reset-button {
+    height: 45px;
+    width: 50px;
+  }
+  .reset-para {
+    font-size: 12px;
+  }
+
+  .timer-limits-set-card {
+    width: 80%;
+  }
+
+  .timer-limit-para {
+    font-size: 12px;
+  }
+
+  .timer-set-buttons-card {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .increment-button {
+    height: 25px;
+    width: 25px;
+    font-size: 15px;
+  }
+
+  .set-timer-value {
+    font-size: 18px;
+  }
+
+  .decrement-button {
+    height: 25px;
+    width: 25px;
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .digi-heading {
+    font-size: 50px;
+  }
+
+  .time {
+    font-size: 35px;
+  }
+
+  .time-status {
+    font-size: 22px;
+  }
+
+  .start-stop-status {
+    font-size: 22px;
+  }
+
+  .reset-para {
+    font-size: 22px;
+  }
+
+  .timer-limit-para {
+    font-size: 20px;
+  }
+
+  .increment-button {
+    font-size: 18px;
+  }
+
+  .set-timer-value {
+    font-size: 20px;
+  }
+
+  .decrement-button {
+    font-size: 18px;
+  }
 }

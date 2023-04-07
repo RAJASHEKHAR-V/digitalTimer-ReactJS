@@ -16,6 +16,11 @@ class DigitalTimer extends Component {
     const {secondsIncreased, setTimerLimit} = this.state
     const newMinutes = Math.floor((setTimerLimit * 60 - secondsIncreased) / 60)
     const newSeconds = (setTimerLimit * 60 - secondsIncreased) % 60
+    if (newMinutes < 0 && newSeconds < 0) {
+      clearInterval(this.timerId)
+      this.setState(prevState => ({isTimerStarted: !prevState.isTimerStarted}))
+      return
+    }
     this.setState(prevState => ({
       minutes: newMinutes,
       seconds: newSeconds,
@@ -25,7 +30,7 @@ class DigitalTimer extends Component {
 
   onPlayOrStopButton = () => {
     const {isTimerStarted} = this.state
-
+    console.log(isTimerStarted)
     if (!isTimerStarted) {
       this.timerId = setInterval(this.tick, 1000)
       this.setState(prevState => ({
@@ -39,9 +44,24 @@ class DigitalTimer extends Component {
   }
 
   onReset = () => {
+    const {minutes, seconds} = this.state
+    if (minutes === 0 && seconds === 0) {
+      this.setState(prevState => ({
+        minutes: 25,
+        seconds: 0,
+        setTimerLimit: 25,
+        secondsIncreased: 1,
+        isReset: !prevState.isReset,
+      }))
+      return
+    }
+
+    clearInterval(this.timerId)
+
     this.setState(prevState => ({
       minutes: prevState.setTimerLimit,
       seconds: 0,
+      secondsIncreased: 1,
       isReset: !prevState.isReset,
     }))
   }
@@ -69,7 +89,7 @@ class DigitalTimer extends Component {
       isReset,
     } = this.state
 
-    const timerStatus = isTimerStarted ? 'Running' : 'Pause'
+    const timerStatus = isTimerStarted ? 'Running' : 'Paused'
     const startStopStatus = isTimerStarted
       ? [
           'https://assets.ccbp.in/frontend/react-js/pause-icon-img.png',
@@ -82,6 +102,7 @@ class DigitalTimer extends Component {
           ' Start',
         ]
     const addSeconds = seconds.toString().length === 1 ? `0${seconds}` : seconds
+    const addMinutes = minutes.toString().length === 1 ? `0${minutes}` : minutes
 
     return (
       <div className="bg-container">
@@ -90,7 +111,7 @@ class DigitalTimer extends Component {
           <div className="timer-card">
             <div className="time-display-card">
               <h1 className="time">
-                {minutes.toString()}:{addSeconds}
+                {addMinutes}:{addSeconds}
               </h1>
               <p className="time-status">{timerStatus}</p>
             </div>
@@ -109,10 +130,11 @@ class DigitalTimer extends Component {
                       className="start-stop-image"
                       y
                       alt={startStopStatus[1]}
-                    />
+                    />{' '}
+                    {startStopStatus[2]}
                   </button>
                 </div>
-                <p className="start-stop-status">{startStopStatus[2]}</p>
+                {/* <p className="start-stop-status">{startStopStatus[2]}</p> */}
               </div>
               <div className="reset-card">
                 <div>
@@ -125,10 +147,11 @@ class DigitalTimer extends Component {
                       src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png"
                       className="reset-image"
                       alt="reset icon"
-                    />
+                    />{' '}
+                    Reset
                   </button>
                 </div>
-                <p className="reset-para">Reset</p>
+                {/* <p className="reset-para">Reset</p> */}
               </div>
             </div>
             <div className="timer-limits-set-card">
@@ -139,9 +162,9 @@ class DigitalTimer extends Component {
                     className="increment-button"
                     type="submit"
                     disabled={isReset}
-                    onClick={this.onIncrementButton}
+                    onClick={this.onDecrementButton}
                   >
-                    +
+                    -
                   </button>
                 </div>
                 <p className="set-timer-value">{setTimerLimit}</p>
@@ -150,9 +173,9 @@ class DigitalTimer extends Component {
                     className="decrement-button"
                     type="submit"
                     disabled={isReset}
-                    onClick={this.onDecrementButton}
+                    onClick={this.onIncrementButton}
                   >
-                    -
+                    +
                   </button>
                 </div>
               </div>
