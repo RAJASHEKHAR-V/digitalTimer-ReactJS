@@ -63,6 +63,7 @@ class DigitalTimer extends Component {
       seconds: 0,
       secondsIncreased: 1,
       isReset: !prevState.isReset,
+      isTimerStarted: !prevState.isTimerStarted,
     }))
   }
 
