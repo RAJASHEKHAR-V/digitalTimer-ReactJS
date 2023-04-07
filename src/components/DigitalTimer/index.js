@@ -44,26 +44,31 @@ class DigitalTimer extends Component {
   }
 
   onReset = () => {
-    const {minutes, seconds} = this.state
+    const {minutes, seconds, isTimerStarted} = this.state
+    console.log(isTimerStarted)
     if (minutes === 0 && seconds === 0) {
-      this.setState(prevState => ({
+      this.setState({
         minutes: 25,
         seconds: 0,
         setTimerLimit: 25,
         secondsIncreased: 1,
-        isReset: !prevState.isReset,
+        isReset: false,
+      })
+    } else if (isTimerStarted) {
+      clearInterval(this.timerId)
+      this.setState(prevState => ({
+        isTimerStarted: !prevState.isTimerStarted,
+        minutes: prevState.setTimerLimit,
+        seconds: 0,
+        secondsIncreased: 1,
+        isReset: false,
       }))
-      return
     }
-
-    clearInterval(this.timerId)
-
     this.setState(prevState => ({
       minutes: prevState.setTimerLimit,
       seconds: 0,
       secondsIncreased: 1,
-      isReset: !prevState.isReset,
-      isTimerStarted: !prevState.isTimerStarted,
+      isReset: false,
     }))
   }
 
@@ -135,7 +140,6 @@ class DigitalTimer extends Component {
                     {startStopStatus[2]}
                   </button>
                 </div>
-                {/* <p className="start-stop-status">{startStopStatus[2]}</p> */}
               </div>
               <div className="reset-card">
                 <div>
@@ -152,7 +156,6 @@ class DigitalTimer extends Component {
                     Reset
                   </button>
                 </div>
-                {/* <p className="reset-para">Reset</p> */}
               </div>
             </div>
             <div className="timer-limits-set-card">
